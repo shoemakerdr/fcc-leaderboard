@@ -11,29 +11,17 @@ const intialState = [
     }
 ]
 
-const upArrow = '↑'
-const downArrow = '↓'
-
 class App extends Component {
     constructor () {
         super()
         this.getData = this.getData.bind(this)
-        this.sortDescendingRecent = this.sortDescendingRecent.bind(this)
-        this.sortAscendingRecent = this.sortAscendingRecent.bind(this)
-        this.sortDescendingAllTime = this.sortDescendingAllTime.bind(this)
-        this.sortAscendingAllTime = this.sortAscendingAllTime.bind(this)
+        this.sortRecent = this.sortRecent.bind(this)
+        this.sortAllTime = this.sortAllTime.bind(this)
+        this.recent = ''
+        this.alltime = ''
         this.state = {
             fetchData: intialState,
-            recent: {
-                sort: false,
-                arrow: '',
-                type: ''
-            },
-            alltime: {
-                sort: false,
-                arrow: '',
-                type: ''
-            }
+            sort: ''
         }
     }
 
@@ -42,76 +30,31 @@ class App extends Component {
     }
 
     getData () {
-        fetch('https://fcctop100.herokuapp.com/api/fccusers/top/recent')
+        const recent = fetch('https://fcctop100.herokuapp.com/api/fccusers/top/recent')
             .then(data => data.json())
-            .then(data => this.setState({fetchData:data}))
+            .then(data => {
+                this.setState({fetchData:data})
+                this.recent = data
+            })
+        const alltime = fetch('https://fcctop100.herokuapp.com/api/fccusers/top/alltime')
+            .then(data => data.json())
+            .then(data => {
+                this.alltime = data
+            })
+        Promise.all([recent, alltime])
     }
 
-    sortDescendingRecent () {
-        const recent = this.state.fetchData.sort((a,b) => b.recent - a.recent)
+    sortRecent () {
         this.setState({
-            fetchData: recent,
-            recent: {
-                sort: true,
-                arrow: downArrow,
-                type: 'descend'
-            },
-            alltime: {
-                sort: false,
-                arrow: '',
-                type: ''
-            }
+            fetchData: this.recent,
+            sort: 'recent'
         })
     }
 
-    sortAscendingRecent () {
-        const recent = this.state.fetchData.sort((a,b) => a.recent - b.recent)
+    sortAllTime () {
         this.setState({
-            fetchData: recent,
-            recent: {
-                sort: true,
-                arrow: upArrow,
-                type: 'ascend'
-            },
-            alltime: {
-                sort: false,
-                arrow: '',
-                type: ''
-            }
-        })
-    }
-
-    sortDescendingAllTime () {
-        const alltime = this.state.fetchData.sort((a,b) => b.alltime - a.alltime)
-        this.setState({
-            fetchData: alltime,
-            recent: {
-                sort: false,
-                arrow: '',
-                type: ''
-            },
-            alltime: {
-                sort: true,
-                arrow: downArrow,
-                type: 'descend'
-            }
-        })
-    }
-
-    sortAscendingAllTime () {
-        const alltime = this.state.fetchData.sort((a,b) => a.alltime - b.alltime)
-        this.setState({
-            fetchData: alltime,
-            recent: {
-                sort: false,
-                arrow: '',
-                type: ''
-            },
-            alltime: {
-                sort: true,
-                arrow: upArrow,
-                type: 'ascend'
-            }
+            fetchData: this.alltime,
+            sort: 'alltime'
         })
     }
 
@@ -123,12 +66,9 @@ class App extends Component {
                 </div>
                 <Table
                     data={this.state.fetchData}
-                    recent={this.state.recent}
-                    alltime={this.state.alltime}
-                    descendRecent={this.sortDescendingRecent}
-                    ascentRecent={this.sortAscendingRecent}
-                    descendAllTime={this.sortDescendingAllTime}
-                    ascendAllTime={this.sortAscendingAllTime}
+                    sort={this.state.sort}
+                    sortRecent={this.sortRecent}
+                    sortAllTime={this.sortAllTime}
                 />
             </div>
         );
