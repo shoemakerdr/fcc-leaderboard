@@ -2,25 +2,27 @@ import React from 'react'
 import './Table.css'
 import TableRow from './TableRow'
 
+const arrow = '↓'
+
 const Table = props =>
     (
-        <table>
+        <table className='Table'>
             <tbody>
-                <tr>
+                <tr className='table-header'>
                     <th>Rank</th>
                     <th>Camper Name</th>
-                    <th
-                        onClick={() => props.recent.type === 'descend' ? props.ascentRecent() : props.descendRecent()}
+                    <th className='sort'
+                        onClick={() => props.sortRecent()}
                     >
-                        Points in Past 30 Days {props.recent.sort ? props.recent.arrow : ''}
+                        Points in Past 30 Days {props.sort === 'recent' ? arrow : ''}
                     </th>
-                    <th
-                        onClick={() => props.alltime.type === 'descend' ? props.ascendAllTime() : props.descendAllTime()}
+                    <th className='sort'
+                        onClick={() => props.sortAllTime()}
                     >
-                        All Time Points {props.alltime.sort ? props.alltime.arrow : ''}
+                        All Time Points {props.sort === 'alltime' ? arrow : ''}
                     </th>
                 </tr>
-                {props.data.map((item, i) =>
+                {props.data.length > 1 && props.data.map((item, i) =>
                     <TableRow 
                         key={i}
                         rank={i + 1}
