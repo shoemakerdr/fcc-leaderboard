@@ -3,11 +3,13 @@ import './TableRow.css'
 
 const TableRow = props =>
     (
-        <tr>
+        <tr className='TableRow'>
             <td>{props.rank}</td>
             <td>
-                <img src={props.img} alt={props.username} /> 
-                <a href={props.link}>{props.username}</a>
+                <div className='user-info'>
+                    <img src={props.img} alt={props.username} className='user-img' />
+                    <a href={props.link}  className='username'>{props.username}</a>
+                </div>
             </td>
             <td>{props.recent}</td>
             <td>{props.alltime}</td>
