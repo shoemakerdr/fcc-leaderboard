@@ -1,0 +1,20 @@
+img {
+    height: 3em;
+    width: 3em;
+}
+
+td {
+    border: 3px black solid;
+}
+
+a {
+    font-size:1.25em;
+    align-self: center;
+    color: black;
+    padding: 0 .5em;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: row;
+}

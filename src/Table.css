@@ -1,3 +1,16 @@
-th {
+.Table {
+    margin: 1em;
+    border-collapse: collapse;
+    border: 3px black solid;
+    align-self: center;
+}
+
+.sort {
     cursor:pointer;
+    margin: 0 2em;
+}
+
+th {
+    border: 3px black solid;
+    font-size: 1.5em;
 }
